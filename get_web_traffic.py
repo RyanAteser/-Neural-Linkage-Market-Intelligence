@@ -1,5 +1,17 @@
-def get_web_traffic(ticker):
-    # Example using Google Trends API or SimilarWeb API to fetch web traffic
-    traffic_url = f"https://api.similarweb.com/traffic/{ticker}"
-    response = requests.get(traffic_url)
-    return response.json()['traffic']
+from pytrends.request import TrendReq
+
+def get_google_trends_data(ticker):
+    pytrends = TrendReq(hl='en-US', tz=360)
+    
+    # Build payload with the search query
+    pytrends.build_payload([ticker], cat=0, timeframe='today 12-m')
+    
+    # Get interest over time
+    trends_data = pytrends.interest_over_time()
+    
+    return trends_data
+
+# Example usage:
+ticker = "AAPL"  # Example ticker (Apple)
+trends_data = get_google_trends_data(ticker)
+print(trends_data)
