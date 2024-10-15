@@ -32,6 +32,26 @@ def predict():
     final_predicted_price = predicted_price + adjusted_prediction
 
     return jsonify({'predicted_price': final_predicted_price})
+# app.py
+from xai_model import explain_model
+
+@app.route('/explain', methods=['POST'])
+def explain():
+    # Get the input features
+    data = request.json['data']
+    
+    # Convert to numpy array (example data)
+    X = np.array(data)
+    
+    # Load the trained model
+    model = load_trained_model()  # Placeholder for model loading
+    
+    # Explain the prediction using SHAP
+    shap_values = explain_model(model, X)
+    
+    # Return the SHAP values
+    return jsonify({'shap_values': shap_values.tolist()})
+
 
 if __name__ == '__main__':
     app.run(debug=True)
