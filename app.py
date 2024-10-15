@@ -49,6 +49,19 @@ def predict():
     return jsonify({'predicted_price': final_predicted_price})
 # app.py
 from xai_model import explain_model
+# app.py
+from portfolio_management import portfolio_optimizer
+
+@app.route('/optimize_portfolio', methods=['POST'])
+def optimize_portfolio():
+    returns = np.array(request.json['returns'])
+    cov_matrix = np.array(request.json['cov_matrix'])
+    target_return = request.json['target_return']
+    
+    # Optimize the portfolio
+    optimal_weights = portfolio_optimizer(returns, cov_matrix, target_return)
+
+    return jsonify({'optimal_weights': optimal_weights.tolist()})
 
 @app.route('/explain', methods=['POST'])
 def explain():
