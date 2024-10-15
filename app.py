@@ -4,6 +4,21 @@ from advanced_model import prepare_data, train_hybrid_model
 from rl_model import RLAgent
 
 app = Flask(__name__)
+# app.py
+from alert_system import detect_anomalies, send_alert
+
+@app.route('/monitor', methods=['POST'])
+def monitor():
+    stock_prices = np.array(request.json['stock_prices'])
+    
+    # Detect anomalies in stock price
+    anomalies = detect_anomalies(stock_prices)
+    
+    # Send alerts if anomalies are found
+    for anomaly in anomalies:
+        send_alert(anomaly)
+
+    return jsonify({'anomalies': anomalies})
 
 @app.route('/predict', methods=['GET'])
 def predict():
