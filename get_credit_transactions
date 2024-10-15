@@ -1,0 +1,4 @@
+def get_transaction_data(company):
+    transaction_url = f"https://api.secondmeasure.com/transactions/{company}"
+    response = requests.get(transaction_url)
+    return response.json()['transaction_volume']
